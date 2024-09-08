@@ -7,4 +7,17 @@ fun main(args : Array<String>) {
 
     println("시도할 회수는 몇회인가요?")
     val count = readlnOrNull()?.toInt()?: 0
+
+    println("실행 결과")
+    for (i in 0 until count) {
+        for (race in races) {
+            val range = kotlin.random.Random.nextInt(0, 10)
+            val add = when(range) {
+                in 4..9 -> 1
+                else -> 0
+            }
+            race.setValue(race.value + add)
+        }
+        println()
+    }
 }
