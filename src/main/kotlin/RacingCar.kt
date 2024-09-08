@@ -1,8 +1,25 @@
 package com.racingCar.mainKt
 
+fun inputCarNames(): List<String>{
+    val cars = readlnOrNull()?.split(",")?: listOf()
+    if (cars.find { it.length > 5 } == null &&
+        cars.isNotEmpty()) {
+        return cars;
+    }
+    throw IllegalArgumentException("[ERROR] Invalid argument.");
+}
+
 fun main(args : Array<String>) {
     println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)")
-    val cars = readlnOrNull()?.split(",")?: listOf()
+    var cars : List<String>
+    while(true){
+        try {
+            cars = inputCarNames();
+            break;
+        } catch (e: IllegalArgumentException) {
+            println(e.message)
+        }
+    }
     val races: MutableMap<String, Int> = cars.associateWith { 0 }.toMutableMap()
 
     println("시도할 회수는 몇회인가요?")
