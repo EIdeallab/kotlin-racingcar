@@ -25,4 +25,9 @@ fun main(args : Array<String>) {
         }
         println()
     }
+
+    val maxValue = races.values.maxOrNull()
+    val maxKeys = races.filter { it.value == maxValue }.keys
+
+    println("최종 우승자 : " + maxKeys.joinToString(", "))
 }
