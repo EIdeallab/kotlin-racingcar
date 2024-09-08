@@ -17,6 +17,11 @@ fun main(args : Array<String>) {
                 else -> 0
             }
             race.setValue(race.value + add)
+            print(race.key + " : ")
+            for (j in 0 until race.value) {
+                print("-")
+            }
+            println()
         }
         println()
     }
