@@ -9,11 +9,34 @@ fun inputCarNames(): List<String>{
     throw IllegalArgumentException("[ERROR] Invalid argument.")
 }
 
+fun initRaces(): MutableMap<String, Int> {
+    var cars : List<String>
+    while(true){
+        try {
+            cars = inputCarNames()
+            break
+        } catch (e: IllegalArgumentException) {
+            println(e.message)
+        }
+    }
+    return cars.associateWith { 0 }.toMutableMap()
+}
+
 fun getRandValue(): Int {
     val range = kotlin.random.Random.nextInt(0, 10)
     return when(range) {
         in 4..9 -> 1
         else -> 0
+    }
+}
+
+fun runRaces(races: MutableMap<String, Int>, count: Int) {
+    for (i in 0 until count) {
+        for (race in races) {
+            race.setValue(race.value + getRandValue())
+            printRace(race)
+        }
+        println()
     }
 }
 
@@ -33,28 +56,13 @@ fun getWinners(races: MutableMap<String, Int>): String {
 
 fun main() {
     println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)")
-    var cars : List<String>
-    while(true){
-        try {
-            cars = inputCarNames()
-            break
-        } catch (e: IllegalArgumentException) {
-            println(e.message)
-        }
-    }
-    val races: MutableMap<String, Int> = cars.associateWith { 0 }.toMutableMap()
+    val races = initRaces()
 
     println("시도할 회수는 몇회인가요?")
     val count = readlnOrNull()?.toInt()?: 0
 
     println("실행 결과")
-    for (i in 0 until count) {
-        for (race in races) {
-            race.setValue(race.value + getRandValue())
-            printRace(race)
-        }
-        println()
-    }
+    runRaces(races, count)
 
     println("최종 우승자 : " + getWinners(races))
 }
