@@ -4,18 +4,40 @@ fun inputCarNames(): List<String>{
     val cars = readlnOrNull()?.split(",")?: listOf()
     if (cars.find { it.length > 5 } == null &&
         cars.isNotEmpty()) {
-        return cars;
+        return cars
     }
-    throw IllegalArgumentException("[ERROR] Invalid argument.");
+    throw IllegalArgumentException("[ERROR] Invalid argument.")
 }
 
-fun main(args : Array<String>) {
+fun getRandValue(): Int {
+    val range = kotlin.random.Random.nextInt(0, 10)
+    return when(range) {
+        in 4..9 -> 1
+        else -> 0
+    }
+}
+
+fun printRace(race: MutableMap.MutableEntry<String, Int>) {
+    print(race.key + " : ")
+    for (j in 0 until race.value) {
+        print("-")
+    }
+    println()
+}
+
+fun getWinners(races: MutableMap<String, Int>): String {
+    val maxValue = races.values.maxOrNull()
+    val maxKeys = races.filter { it.value == maxValue }.keys
+    return maxKeys.joinToString(", ")
+}
+
+fun main() {
     println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)")
     var cars : List<String>
     while(true){
         try {
-            cars = inputCarNames();
-            break;
+            cars = inputCarNames()
+            break
         } catch (e: IllegalArgumentException) {
             println(e.message)
         }
@@ -28,23 +50,11 @@ fun main(args : Array<String>) {
     println("실행 결과")
     for (i in 0 until count) {
         for (race in races) {
-            val range = kotlin.random.Random.nextInt(0, 10)
-            val add = when(range) {
-                in 4..9 -> 1
-                else -> 0
-            }
-            race.setValue(race.value + add)
-            print(race.key + " : ")
-            for (j in 0 until race.value) {
-                print("-")
-            }
-            println()
+            race.setValue(race.value + getRandValue())
+            printRace(race)
         }
         println()
     }
 
-    val maxValue = races.values.maxOrNull()
-    val maxKeys = races.filter { it.value == maxValue }.keys
-
-    println("최종 우승자 : " + maxKeys.joinToString(", "))
+    println("최종 우승자 : " + getWinners(races))
 }
